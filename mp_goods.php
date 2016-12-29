@@ -47,6 +47,11 @@ class plugin_mp_goods_best {
                 $wechat = new mp_goods_recommend($config);
                 break;
                 
+            case 'promotion':
+               	require_once RC_Plugin::plugin_dir_path(__FILE__) . 'mp_goods_promotion.class.php';
+                $wechat = new mp_goods_promotion($config);
+                break;
+                
             default:
                 require_once RC_Plugin::plugin_dir_path(__FILE__) . 'mp_goods.class.php';
                 $wechat = new mp_goods($config);

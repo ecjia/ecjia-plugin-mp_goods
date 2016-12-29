@@ -5,7 +5,7 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 RC_Loader::load_app_class('platform_abstract', 'platform', false);
-class mp_goods_best extends platform_abstract
+class mp_goods_promotion extends platform_abstract
 {   
 	
 	/**
@@ -19,11 +19,14 @@ class mp_goods_best extends platform_abstract
 		return array();
 	}
 	
-	//获取精品
+	//获取促销商品
     public function event_reply() {
-    	$goods_db = RC_Loader::load_app_model('goods_model','goods');
-    	$data = $goods_db->where(array('is_best'=>1,'is_delete'=>0))->order('sort_order ASC')->limit(5)->select();
-    	_dump($data,1);
+    	$db_goods = RC_Loader::load_app_model('goods_model','goods');
+    	$time = RC_Time::gmtime();
+    	$where['promote_start_date'] = array('elt' => $time);
+    	$where['promote_end_date'] = array('egt' => $time);
+    	$field = 'goods_id, goods_name, promote_price, promote_start_date, promote_end_date, goods_img';
+    	$data = $db_goods->field($field)->where(array('is_promote' => 1,'is_delete' => 0))->order('sort_order ASC')->limit(5)->select();
     	$articles = array();
     	foreach ($data as $key => $val) {
     		$articles[$key]['Title'] = $val['goods_name'];
@@ -31,6 +34,7 @@ class mp_goods_best extends platform_abstract
     		$articles[$key]['PicUrl'] = RC_Upload::upload_url($val['goods_img']);
     		$articles[$key]['Url'] = 'http://test.b2b2c.ecjia.com/sites/touch/index.php?m=goods&c=index&a=init&id='.$val['goods_id'];
     	}
+    	
     	$count = count($articles);
     	$content = array(
     		'ToUserName' => $this->from_username,
@@ -40,7 +44,6 @@ class mp_goods_best extends platform_abstract
     		'ArticleCount'=>$count,
     		'Articles'=>$articles
     	);
-    	_dump($articles,1);
     	return $content;
     	
     }

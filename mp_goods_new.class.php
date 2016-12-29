@@ -20,6 +20,7 @@ class mp_goods_new extends platform_abstract
 		return array();
 	}
 	
+	//获取最新产品
     public function event_reply() {
     	$goods_db = RC_Loader::load_app_model('goods_model','goods');
     	$data = $goods_db->where(array('is_new'=>1,'is_delete'=>0))->order('sort_order ASC')->limit(5)->select();
