@@ -23,7 +23,6 @@ class mp_goods_best extends platform_abstract
     public function event_reply() {
     	$goods_db = RC_Loader::load_app_model('goods_model','goods');
     	$data = $goods_db->where(array('is_best'=>1,'is_delete'=>0))->order('sort_order ASC')->limit(5)->select();
-    	_dump($data,1);
     	$articles = array();
     	foreach ($data as $key => $val) {
     		$articles[$key]['Title'] = $val['goods_name'];
@@ -40,9 +39,7 @@ class mp_goods_best extends platform_abstract
     		'ArticleCount'=>$count,
     		'Articles'=>$articles
     	);
-    	_dump($articles,1);
     	return $content;
-    	
     }
 }
 
