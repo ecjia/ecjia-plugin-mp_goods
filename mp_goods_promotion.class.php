@@ -52,7 +52,6 @@ class mp_goods_promotion extends platform_abstract
     		'Articles'=>$articles
     	);
     	return $content;
-    	
     }
 }
 

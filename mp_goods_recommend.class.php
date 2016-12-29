@@ -40,7 +40,6 @@ class mp_goods_recommend extends platform_abstract
     		'Articles'=>$articles
     	);
     	return $content;
-    	
     }
 }
 
