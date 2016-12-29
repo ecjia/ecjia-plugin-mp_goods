@@ -30,7 +30,14 @@ class mp_goods_new extends platform_abstract
     		$articles[$key]['Title'] = $val['goods_name'];
     		$articles[$key]['Description'] = '';
     		$articles[$key]['PicUrl'] = RC_Upload::upload_url($val['goods_img']);
-    		$articles[$key]['Url'] = 'http://test.b2b2c.ecjia.com/sites/touch/index.php?m=goods&c=index&a=init&id='.$val['goods_id'];
+    		//$articles[$key]['Url'] = 'http://test.b2b2c.ecjia.com/sites/touch/index.php?m=goods&c=index&a=init&id='.$val['goods_id'];
+    		$home_url =  RC_Uri::home_url();
+    		if (strpos($home_url, 'sites')) {
+    			$url = substr($home_url, 0, strpos($home_url, 'sites'));
+    			$articles[$key]['Url'] = $url.'sites/m/index.php?m=goods&c=index&a=show&goods_id='.$val['goods_id'];
+    		} else {
+    			$articles[$key]['Url'] = $home_url.'/sites/m/index.php?m=goods&c=index&a=show&goods_id='.$val['goods_id'];
+    		}
     	}
     	$count = count($articles);
     	$content = array(
