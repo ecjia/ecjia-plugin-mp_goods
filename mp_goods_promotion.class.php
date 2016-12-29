@@ -22,11 +22,14 @@ class mp_goods_promotion extends platform_abstract
 	//获取促销商品
     public function event_reply() {
     	$db_goods = RC_Loader::load_app_model('goods_model','goods');
-    	$time = RC_Time::gmtime();
-    	$where['promote_start_date'] = array('elt' => $time);
-    	$where['promote_end_date'] = array('egt' => $time);
+   
+    	$where = array('is_promote' => 1);
+		$where['is_delete'] = array('neq' => 1);
+		$time = RC_Time::gmtime();
+		$where['promote_start_date'] = array('elt' => $time);
+		$where['promote_end_date'] = array('egt' => $time);
     	$field = 'goods_id, goods_name, promote_price, promote_start_date, promote_end_date, goods_img';
-    	$data = $db_goods->field($field)->where(array('is_promote' => 1,'is_delete' => 0))->order('sort_order ASC')->limit(5)->select();
+    	$data = $db_goods->field($field)->where($where)->order('sort_order ASC')->limit(5)->select();
     	$articles = array();
     	foreach ($data as $key => $val) {
     		$articles[$key]['Title'] = $val['goods_name'];
