@@ -73,7 +73,7 @@ class mp_goods_best extends platform_abstract
     		$articles[$key]['Title'] = $val['goods_name'];
     		$articles[$key]['Description'] = '';
     		$articles[$key]['PicUrl'] = RC_Upload::upload_url($val['goods_img']);
-    		$articles[$key]['Url'] = 'http://test.b2b2c.ecjia.com/sites/touch/index.php?m=goods&c=index&a=init&id='.$val['goods_id'];
+    		$articles[$key]['Url'] = RC_Uri::home_url().'/sites/m/index.php?m=goods&c=index&a=show&goods_id='.$val['goods_id'];
     	}
     	$count = count($articles);
     	$content = array(
