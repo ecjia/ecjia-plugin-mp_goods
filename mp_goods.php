@@ -106,7 +106,12 @@ class plugin_mp_goods_best {
     }
 }
 
+Ecjia_PluginManager::extend('mp_goods', function() {
+    require_once RC_Plugin::plugin_dir_path(__FILE__) . 'mp_goods.class.php';
+    return new mp_goods();
+});
+
 RC_Plugin::register_activation_hook(__FILE__, array('plugin_mp_goods_best', 'install'));
 RC_Plugin::register_deactivation_hook(__FILE__, array('plugin_mp_goods_best', 'uninstall'));
-RC_Hook::add_filter('platform_factory_adapter_instance', array( 'plugin_mp_goods_best', 'adapter_instance' ), 10, 2);
+// RC_Hook::add_filter('platform_factory_adapter_instance', array( 'plugin_mp_goods_best', 'adapter_instance' ), 10, 2);
 // end
