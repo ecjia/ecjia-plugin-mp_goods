@@ -98,7 +98,12 @@ class mp_goods extends PlatformAbstract
         return '';
     }
 	
-    public function event_reply() {
+    /**
+     * 事件回复
+     * {@inheritDoc}
+     * @see \Ecjia\App\Platform\Plugin\PlatformAbstract::eventReply()
+     */
+    public function eventReply() {
     	$goods_db = RC_Loader::load_app_model('goods_model','goods');
     	$data = $goods_db->where(array('is_delete'=>0))->order('sort_order ASC')->limit(5)->select();
     	
