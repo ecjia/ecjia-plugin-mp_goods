@@ -146,7 +146,7 @@ class mp_goods extends PlatformAbstract
     
     
     protected function getCommandInstance()
-    {
+    {\RC_Logger::getLogger('wechat')->info($this->getSubCodeCommand());
         if ($this->getSubCodeCommand()) {
             switch ($this->getSubCodeCommand()) {
                 case 'best':
@@ -175,6 +175,8 @@ class mp_goods extends PlatformAbstract
                     break;
                     
                 default:
+                    $subCommand = $this;
+                    break;
                     //                     require_once RC_Plugin::plugin_dir_path(__FILE__) . 'mp_goods.class.php';
                     //                     $subCommand = new mp_goods();
             }
