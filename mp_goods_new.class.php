@@ -82,6 +82,7 @@ class mp_goods_new extends mp_goods
 //     		'ArticleCount'=>$count,
 //     		'Articles'=>$articles
 //     	);
+    	\RC_Logger::getLogger('wechat')->info(json_encode($articles));
     	return $articles;
     }
 }

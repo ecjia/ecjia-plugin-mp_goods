@@ -146,7 +146,7 @@ class mp_goods extends PlatformAbstract
     
     
     protected function getCommandInstance()
-    {\RC_Logger::getLogger('wechat')->info($this->getSubCodeCommand());
+    {
         if ($this->getSubCodeCommand()) {
             switch ($this->getSubCodeCommand()) {
                 case 'best':
