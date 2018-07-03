@@ -50,6 +50,7 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 use Ecjia\App\Platform\Plugin\PlatformAbstract;
+use Ecjia\App\Wechat\WechatRecord;
 
 class mp_goods extends PlatformAbstract
 {   
@@ -104,26 +105,83 @@ class mp_goods extends PlatformAbstract
      * @see \Ecjia\App\Platform\Plugin\PlatformAbstract::eventReply()
      */
     public function eventReply() {
-    	$goods_db = RC_Loader::load_app_model('goods_model','goods');
-    	$data = $goods_db->where(array('is_delete'=>0))->order('sort_order ASC')->limit(5)->select();
-    	
-    	$articles = array();
-    	foreach ($data as $key => $val) {
-    		$articles[$key]['Title'] = $val['goods_name'];
-    		$articles[$key]['Description'] = '';
-    		$articles[$key]['PicUrl'] = RC_Upload::upload_url($val['goods_img']);
-    		$articles[$key]['Url'] = RC_Uri::home_url().'/sites/m/index.php?m=goods&c=index&a=show&goods_id='.$val['goods_id'];
-    	}
-    	$count = count($articles);
-    	$content = array(
-    		'ToUserName' => $this->from_username,
-    		'FromUserName' => $this->to_username,
-    		'CreateTime' => SYS_TIME,
-    		'MsgType' => 'news',
-    		'ArticleCount'=>$count,
-    		'Articles'=>$articles
-    	);
-        return $content;
+        
+        $commandInstance = $this->getCommandInstance();
+        
+        return $commandInstance->handleEventReply();
+    }
+    
+    /**
+     * 获取普通商品
+     * @return string[]|array[]|NULL[]|number[]
+     */
+    protected function handleEventReply()
+    {
+        $goods_db = RC_Loader::load_app_model('goods_model','goods');
+        $data = $goods_db->where(array('is_delete'=>0))->order('sort_order ASC')->limit(5)->select();
+        
+        $articles = array();
+        foreach ($data as $key => $val) {
+            $url = RC_Uri::home_url().'/sites/m/index.php?m=goods&c=index&a=show&goods_id='.$val['goods_id'];
+            $image = RC_Upload::upload_url($val['goods_img']);
+            $articles[$key] = WechatRecord::News_reply($this->getMessage(), $val['goods_name'], '', $url, $image);
+            
+//             $articles[$key]['Title'] = $val['goods_name'];
+//             $articles[$key]['Description'] = '';
+//             $articles[$key]['PicUrl'] = RC_Upload::upload_url($val['goods_img']);
+//             $articles[$key]['Url'] = RC_Uri::home_url().'/sites/m/index.php?m=goods&c=index&a=show&goods_id='.$val['goods_id'];
+        }
+//         $count = count($articles);
+//         $content = array(
+//             'ToUserName' => $this->from_username,
+//             'FromUserName' => $this->to_username,
+//             'CreateTime' => SYS_TIME,
+//             'MsgType' => 'news',
+//             'ArticleCount'=>$count,
+//             'Articles'=>$articles
+//         );
+        return $articles;
+    }
+    
+    
+    protected function getCommandInstance()
+    {
+        if ($this->getSubCodeCommand()) {
+            switch ($this->getSubCodeCommand()) {
+                case 'best':
+                    require_once RC_Plugin::plugin_dir_path(__FILE__) . 'mp_goods_best.class.php';
+                    $subCommand = new mp_goods_best();
+                    break;
+                    
+                case 'hot':
+                    require_once RC_Plugin::plugin_dir_path(__FILE__) . 'mp_goods_hot.class.php';
+                    $subCommand = new mp_goods_hot();
+                    break;
+                    
+                case 'new':
+                    require_once RC_Plugin::plugin_dir_path(__FILE__) . 'mp_goods_new.class.php';
+                    $subCommand = new mp_goods_new();
+                    break;
+                    
+                case 'recommend':
+                    require_once RC_Plugin::plugin_dir_path(__FILE__) . 'mp_goods_recommend.class.php';
+                    $subCommand = new mp_goods_recommend();
+                    break;
+                    
+                case 'promotion':
+                    require_once RC_Plugin::plugin_dir_path(__FILE__) . 'mp_goods_promotion.class.php';
+                    $subCommand = new mp_goods_promotion();
+                    break;
+                    
+                default:
+                    //                     require_once RC_Plugin::plugin_dir_path(__FILE__) . 'mp_goods.class.php';
+                    //                     $subCommand = new mp_goods();
+            }
+            
+            return $subCommand;
+        } else {
+            return $this;
+        }
     }
 }
 
