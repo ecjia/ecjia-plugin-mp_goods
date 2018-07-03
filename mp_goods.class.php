@@ -109,7 +109,6 @@ class mp_goods extends PlatformAbstract
         
         $commandInstance = $this->getCommandInstance();
         \RC_Logger::getLogger('wechat')->info('eventReply');
-        \RC_Logger::getLogger('wechat')->info($commandInstance);
         return $commandInstance->handleEventReply();
     }
     
