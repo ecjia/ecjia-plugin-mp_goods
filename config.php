@@ -49,6 +49,8 @@ return array(
     'ext_code'      => 'mp_goods',
     
     'ext_icon'      => 'images/icon_goods.png',
+    
+    'sub_code'      => ['best', 'hot', 'new', 'recommend', 'promotion'], //子命令
 			
 	'forms' => array(
 	),
