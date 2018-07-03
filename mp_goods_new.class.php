@@ -62,6 +62,7 @@ class mp_goods_new extends mp_goods
 	 */
     protected function handleEventReply() 
     {
+        \RC_Logger::getLogger('wechat')->info('handleEventReply new');
     	$goods_db = RC_Loader::load_app_model('goods_model','goods');
     	$data = $goods_db->where(array('is_new'=>1,'is_delete'=>0))->order('sort_order ASC')->limit(5)->select();
     	$articles = array();
