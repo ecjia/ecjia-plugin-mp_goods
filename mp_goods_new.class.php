@@ -51,6 +51,8 @@ use Ecjia\App\Wechat\WechatRecord;
  */
 defined('IN_ECJIA') or exit('No permission resources.');
 
+require_once RC_Plugin::plugin_dir_path(__FILE__) . 'mp_goods.class.php';
+
 class mp_goods_new extends mp_goods
 {   
 	
