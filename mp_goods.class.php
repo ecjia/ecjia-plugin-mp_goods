@@ -180,7 +180,7 @@ class mp_goods extends PlatformAbstract
                     //                     require_once RC_Plugin::plugin_dir_path(__FILE__) . 'mp_goods.class.php';
                     //                     $subCommand = new mp_goods();
             }
-            
+            \RC_Logger::getLogger('wechat')->info($subCommand);
             return $subCommand;
         } else {
             return $this;
