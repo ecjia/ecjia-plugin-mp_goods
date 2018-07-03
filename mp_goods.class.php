@@ -126,21 +126,7 @@ class mp_goods extends PlatformAbstract
             $url = RC_Uri::home_url().'/sites/m/index.php?m=goods&c=index&a=show&goods_id='.$val['goods_id'];
             $image = RC_Upload::upload_url($val['goods_img']);
             $articles[$key] = WechatRecord::News_reply($this->getMessage(), $val['goods_name'], '', $url, $image);
-            
-//             $articles[$key]['Title'] = $val['goods_name'];
-//             $articles[$key]['Description'] = '';
-//             $articles[$key]['PicUrl'] = RC_Upload::upload_url($val['goods_img']);
-//             $articles[$key]['Url'] = RC_Uri::home_url().'/sites/m/index.php?m=goods&c=index&a=show&goods_id='.$val['goods_id'];
         }
-//         $count = count($articles);
-//         $content = array(
-//             'ToUserName' => $this->from_username,
-//             'FromUserName' => $this->to_username,
-//             'CreateTime' => SYS_TIME,
-//             'MsgType' => 'news',
-//             'ArticleCount'=>$count,
-//             'Articles'=>$articles
-//         );
         return $articles;
     }
     
@@ -187,8 +173,6 @@ class mp_goods extends PlatformAbstract
                 default:
                     $subCommand = $this;
                     break;
-                    //                     require_once RC_Plugin::plugin_dir_path(__FILE__) . 'mp_goods.class.php';
-                    //                     $subCommand = new mp_goods();
             }
             
             return $subCommand;

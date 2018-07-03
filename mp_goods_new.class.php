@@ -62,7 +62,6 @@ class mp_goods_new extends mp_goods
 	 */
     protected function handleEventReply() 
     {
-        \RC_Logger::getLogger('wechat')->info('handleEventReply new');
     	$goods_db = RC_Loader::load_app_model('goods_model','goods');
     	$data = $goods_db->where(array('is_new'=>1,'is_delete'=>0))->order('sort_order ASC')->limit(5)->select();
     	$articles = array();
@@ -70,24 +69,10 @@ class mp_goods_new extends mp_goods
     	    $url = RC_Uri::home_url().'/sites/m/index.php?m=goods&c=index&a=show&goods_id='.$val['goods_id'];
     	    $image = RC_Upload::upload_url($val['goods_img']);
     	    $articles[$key] = WechatRecord::News_reply($this->getMessage(), $val['goods_name'], '', $url, $image);
-    	    
-//     		$articles[$key]['Title'] = $val['goods_name'];
-//     		$articles[$key]['Description'] = '';
-//     		$articles[$key]['PicUrl'] = RC_Upload::upload_url($val['goods_img']);
-//     		$articles[$key]['Url'] = RC_Uri::home_url().'/sites/m/index.php?m=goods&c=index&a=show&goods_id='.$val['goods_id'];
     	}
-//     	$count = count($articles);
-//     	$content = array(
-//     		'ToUserName' => $this->from_username,
-//     		'FromUserName' => $this->to_username,
-//     		'CreateTime' => SYS_TIME,
-//     		'MsgType' => 'news',
-//     		'ArticleCount'=>$count,
-//     		'Articles'=>$articles
-//     	);
-    	\RC_Logger::getLogger('wechat')->info(json_encode($articles));
     	return $articles;
     }
+    
 }
 
 // end
