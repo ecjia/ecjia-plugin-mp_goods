@@ -152,26 +152,36 @@ class mp_goods extends PlatformAbstract
                 case 'best':
                     require_once RC_Plugin::plugin_dir_path(__FILE__) . 'mp_goods_best.class.php';
                     $subCommand = new mp_goods_best();
+                    $subCommand->setMessage($this->getMessage());
+                    $subCommand->setSubCodeCommand($this->getSubCodeCommand());
                     break;
                     
                 case 'hot':
                     require_once RC_Plugin::plugin_dir_path(__FILE__) . 'mp_goods_hot.class.php';
                     $subCommand = new mp_goods_hot();
+                    $subCommand->setMessage($this->getMessage());
+                    $subCommand->setSubCodeCommand($this->getSubCodeCommand());
                     break;
                     
                 case 'new':
                     require_once RC_Plugin::plugin_dir_path(__FILE__) . 'mp_goods_new.class.php';
                     $subCommand = new mp_goods_new();
+                    $subCommand->setMessage($this->getMessage());
+                    $subCommand->setSubCodeCommand($this->getSubCodeCommand());
                     break;
                     
                 case 'recommend':
                     require_once RC_Plugin::plugin_dir_path(__FILE__) . 'mp_goods_recommend.class.php';
                     $subCommand = new mp_goods_recommend();
+                    $subCommand->setMessage($this->getMessage());
+                    $subCommand->setSubCodeCommand($this->getSubCodeCommand());
                     break;
                     
                 case 'promotion':
                     require_once RC_Plugin::plugin_dir_path(__FILE__) . 'mp_goods_promotion.class.php';
                     $subCommand = new mp_goods_promotion();
+                    $subCommand->setMessage($this->getMessage());
+                    $subCommand->setSubCodeCommand($this->getSubCodeCommand());
                     break;
                     
                 default:
