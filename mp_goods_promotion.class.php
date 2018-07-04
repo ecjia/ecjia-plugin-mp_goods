@@ -59,9 +59,9 @@ class mp_goods_promotion extends mp_goods
      */
     protected function getQueryGoods($type)
     {
+        $time = RC_Time::gmtime();
+        
         if ($type == self::TypeAdmin) {
-            $time = RC_Time::gmtime();
-            
             $data = RC_DB::table('goods')
             ->where('is_delete', 0)
             ->where('is_promote', 1)
