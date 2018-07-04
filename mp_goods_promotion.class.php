@@ -53,6 +53,29 @@ defined('IN_ECJIA') or exit('No permission resources.');
 
 class mp_goods_promotion extends mp_goods
 {   
+    /**
+     * 查询商品
+     * @param unknown $type
+     */
+    protected function getQueryGoods($type)
+    {
+        $goods_db = RC_Loader::load_app_model('goods_model', 'goods');
+        
+        if ($type == self::TypeAdmin) {
+            $where = array('is_promote' => 1);
+            $where['is_delete'] = array('neq' => 1);
+            $time = RC_Time::gmtime();
+            $where['promote_start_date'] = array('elt' => $time);
+            $where['promote_end_date'] = array('egt' => $time);
+            $field = 'goods_id, goods_name, promote_price, promote_start_date, promote_end_date, goods_img';
+            $data = $db_goods->field($field)->where($where)->order('sort_order ASC')->limit(5)->select();
+        }
+        else if ($type == self::TypeMerchant) {
+            
+        }
+        
+        return $data;
+    }
 	
 	/**
 	 * 获取促销商品
@@ -60,25 +83,25 @@ class mp_goods_promotion extends mp_goods
 	 */
     protected function handleEventReply() 
     {
-    	$db_goods = RC_Loader::load_app_model('goods_model','goods');
-   
-    	$where = array('is_promote' => 1);
-		$where['is_delete'] = array('neq' => 1);
-		$time = RC_Time::gmtime();
-		$where['promote_start_date'] = array('elt' => $time);
-		$where['promote_end_date'] = array('egt' => $time);
-    	$field = 'goods_id, goods_name, promote_price, promote_start_date, promote_end_date, goods_img';
-    	$data = $db_goods->field($field)->where($where)->order('sort_order ASC')->limit(5)->select();
     	$articles = array();
-    	foreach ($data as $key => $val) {
-    	    
-    	    $url = RC_Uri::home_url().'/sites/m/index.php?m=goods&c=index&a=show&goods_id='.$val['goods_id'];
-    	    $image = RC_Upload::upload_url($val['goods_img']);
-    	    $articles[$key] = WechatRecord::News_reply($this->getMessage(), $val['goods_name'], '', $url, $image);
-    	    
-    	}
     	
-    	return $articles;
+    	$data = $this->getQueryGoods($this->getStoreType());
+    	
+    	if (!empty($data)) {
+        	foreach ($data as $key => $val) {
+        	    
+        	    $url = RC_Uri::home_url().'/sites/m/index.php?m=goods&c=index&a=show&goods_id='.$val['goods_id'];
+        	    $image = RC_Upload::upload_url($val['goods_img']);
+        	    $articles[$key] = WechatRecord::News_reply($this->getMessage(), $val['goods_name'], '', $url, $image);
+        	    
+        	}
+        	
+        	return $articles;
+    	}
+    	//数据为空回复
+    	else {
+    	    return $this->defaultEmptyReply();
+    	}
     }
 }
 

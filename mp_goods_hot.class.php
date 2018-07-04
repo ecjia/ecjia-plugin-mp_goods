@@ -54,24 +54,48 @@ defined('IN_ECJIA') or exit('No permission resources.');
 
 class mp_goods_hot extends mp_goods
 {   
-	
+    /**
+     * 查询商品
+     * @param unknown $type
+     */
+    protected function getQueryGoods($type)
+    {
+        $goods_db = RC_Loader::load_app_model('goods_model', 'goods');
+        
+        if ($type == self::TypeAdmin) {
+            $data = $goods_db->where(array('is_hot'=>1,'is_delete'=>0))->order('sort_order ASC')->limit(5)->select();
+        }
+        else if ($type == self::TypeMerchant) {
+            
+        }
+        
+        return $data;
+    }
+    
 	/**
 	 * 获取热销产品
 	 * @return string[]|array[]|NULL[]|number[]
 	 */
     protected function handleEventReply() 
     {
-    	$goods_db = RC_Loader::load_app_model('goods_model','goods');
-    	$data = $goods_db->where(array('is_hot'=>1,'is_delete'=>0))->order('sort_order ASC')->limit(5)->select();
-    	
     	$articles = array();
-    	foreach ($data as $key => $val) {
-    	    $url = RC_Uri::home_url().'/sites/m/index.php?m=goods&c=index&a=show&goods_id='.$val['goods_id'];
-    	    $image = RC_Upload::upload_url($val['goods_img']);
-    	    $articles[$key] = WechatRecord::News_reply($this->getMessage(), $val['goods_name'], '', $url, $image);
-    	    
+    	
+    	$data = $this->getQueryGoods($this->getStoreType());
+    	
+    	if (!empty($data)) {
+        	foreach ($data as $key => $val) {
+        	    $url = RC_Uri::home_url().'/sites/m/index.php?m=goods&c=index&a=show&goods_id='.$val['goods_id'];
+        	    $image = RC_Upload::upload_url($val['goods_img']);
+        	    $articles[$key] = WechatRecord::News_reply($this->getMessage(), $val['goods_name'], '', $url, $image);
+        	    
+        	}
+        	
+            return $articles;
     	}
-        return $articles;
+    	//数据为空回复
+    	else {
+    	    return $this->defaultEmptyReply();
+    	}
     }
 }
 
