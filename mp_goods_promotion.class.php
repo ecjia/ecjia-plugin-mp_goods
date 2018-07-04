@@ -62,14 +62,31 @@ class mp_goods_promotion extends mp_goods
         if ($type == self::TypeAdmin) {
             $time = RC_Time::gmtime();
             
-            $data = RC_DB::table('goods')->where('is_delete', 0)->where('is_promote', 1)
-                                    ->where('promote_start_date', '<=', $time)
-                                    ->where('promote_end_date', '>=', $time)
-                                    ->select('goods_id', 'goods_name', 'promote_price', 'promote_start_date', 'promote_end_date', 'goods_img')
-                                    ->orderBy('sort_order', 'ASC')->take(5)->get();
+            $data = RC_DB::table('goods')
+            ->where('is_delete', 0)
+            ->where('is_promote', 1)
+            ->where('is_real', 1)
+            ->where('is_on_sale', 1)
+            ->where('is_alone_sale', 1)
+            ->where('review_status', '>', 2)
+            ->where('promote_start_date', '<=', $time)
+            ->where('promote_end_date', '>=', $time)
+            ->select('goods_id', 'goods_name', 'promote_price', 'promote_start_date', 'promote_end_date', 'goods_img')
+            ->orderBy('sort_order', 'ASC')->take(5)->get();
         }
         else if ($type == self::TypeMerchant) {
-            
+            $data = RC_DB::table('goods')
+            ->where('is_delete', 0)
+            ->where('is_promote', 1)
+            ->where('is_real', 1)
+            ->where('is_on_sale', 1)
+            ->where('is_alone_sale', 1)
+            ->where('review_status', '>', 2)
+            ->where('store_id', $this->getStoreId())
+            ->where('promote_start_date', '<=', $time)
+            ->where('promote_end_date', '>=', $time)
+            ->select('goods_id', 'goods_name', 'promote_price', 'promote_start_date', 'promote_end_date', 'goods_img')
+            ->orderBy('sort_order', 'ASC')->take(5)->get();
         }
         
         return $data;

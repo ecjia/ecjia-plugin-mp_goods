@@ -62,11 +62,25 @@ class mp_goods_new extends mp_goods
     protected function getQueryGoods($type)
     {
         if ($type == self::TypeAdmin) {
-            $data = RC_DB::table('goods')->where('is_delete', 0)->where('is_new', 1)
-                            ->orderBy('sort_order', 'ASC')->take(5)->get();
+            $data = RC_DB::table('goods')
+            ->where('is_delete', 0)
+            ->where('is_new', 1)
+            ->where('is_real', 1)
+            ->where('is_on_sale', 1)
+            ->where('is_alone_sale', 1)
+            ->where('review_status', '>', 2)
+            ->orderBy('sort_order', 'ASC')->take(5)->get();
         }
         else if ($type == self::TypeMerchant) {
-            
+            $data = RC_DB::table('goods')
+            ->where('is_delete', 0)
+            ->where('store_new', 1)
+            ->where('is_real', 1)
+            ->where('is_on_sale', 1)
+            ->where('is_alone_sale', 1)
+            ->where('review_status', '>', 2)
+            ->where('store_id', $this->getStoreId())
+            ->orderBy('sort_order', 'ASC')->take(5)->get();
         }
         
         return $data;

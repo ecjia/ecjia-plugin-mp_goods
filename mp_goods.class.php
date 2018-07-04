@@ -118,10 +118,23 @@ class mp_goods extends PlatformAbstract
     protected function getQueryGoods($type)
     {
         if ($type == self::TypeAdmin) {
-            $data = RC_DB::table('goods')->where('is_delete', 0)->orderBy('sort_order', 'ASC')->take(5)->get();
+            $data = RC_DB::table('goods')
+            ->where('is_delete', 0)
+            ->where('is_real', 1)
+            ->where('is_on_sale', 1)
+            ->where('is_alone_sale', 1)
+            ->where('review_status', '>', 2)
+            ->orderBy('sort_order', 'ASC')->take(5)->get();
         }
         else if ($type == self::TypeMerchant) {
-            
+            $data = RC_DB::table('goods')
+            ->where('is_delete', 0)
+            ->where('is_real', 1)
+            ->where('is_on_sale', 1)
+            ->where('is_alone_sale', 1)
+            ->where('review_status', '>', 2)  
+            ->where('store_id', $this->getStoreId())
+            ->orderBy('sort_order', 'ASC')->take(5)->get();
         }
         
         return $data;
@@ -155,7 +168,7 @@ class mp_goods extends PlatformAbstract
     
     protected function defaultEmptyReply()
     {
-        return WechatRecord::Text_reply($this->getMessage(), '没有找到商品');
+        return WechatRecord::Text_reply($this->getMessage(), '暂无商品');
     }
     
     protected function getCommandInstance()
