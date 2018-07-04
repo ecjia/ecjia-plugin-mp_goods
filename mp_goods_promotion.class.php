@@ -59,16 +59,14 @@ class mp_goods_promotion extends mp_goods
      */
     protected function getQueryGoods($type)
     {
-        $goods_db = RC_Loader::load_app_model('goods_model', 'goods');
-        
         if ($type == self::TypeAdmin) {
-            $where = array('is_promote' => 1);
-            $where['is_delete'] = array('neq' => 1);
             $time = RC_Time::gmtime();
-            $where['promote_start_date'] = array('elt' => $time);
-            $where['promote_end_date'] = array('egt' => $time);
-            $field = 'goods_id, goods_name, promote_price, promote_start_date, promote_end_date, goods_img';
-            $data = $db_goods->field($field)->where($where)->order('sort_order ASC')->limit(5)->select();
+            
+            $data = RC_DB::table('goods')->where('is_delete', 0)->where('is_promote', 1)
+                                    ->where('promote_start_date', '<=', $time)
+                                    ->where('promote_end_date', '>=', $time)
+                                    ->select('goods_id', 'goods_name', 'promote_price', 'promote_start_date', 'promote_end_date', 'goods_img')
+                                    ->orderBy('sort_order', 'ASC')->take(5)->get();
         }
         else if ($type == self::TypeMerchant) {
             

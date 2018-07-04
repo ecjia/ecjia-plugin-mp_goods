@@ -117,10 +117,8 @@ class mp_goods extends PlatformAbstract
      */
     protected function getQueryGoods($type)
     {
-        $goods_db = RC_Loader::load_app_model('goods_model', 'goods');
-        
         if ($type == self::TypeAdmin) {
-            $data = $goods_db->where(array('is_delete'=>0))->order('sort_order ASC')->limit(5)->select();
+            $data = RC_DB::table('goods')->where('is_delete', 0)->orderBy('sort_order', 'ASC')->take(5)->get();
         }
         else if ($type == self::TypeMerchant) {
             
