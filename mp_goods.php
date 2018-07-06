@@ -54,7 +54,8 @@ Author URI: http://www.ecjia.com/
 Plugin App: platform
 */
 defined('IN_ECJIA') or exit('No permission resources.');
-class plugin_mp_goods_best {
+
+class plugin_mp_goods {
 
     public static function install() {
         $config = include(RC_Plugin::plugin_dir_path(__FILE__) . 'config.php');
@@ -76,7 +77,7 @@ Ecjia_PluginManager::extend('mp_goods', function() {
     return new mp_goods();
 });
 
-RC_Plugin::register_activation_hook(__FILE__, array('plugin_mp_goods_best', 'install'));
-RC_Plugin::register_deactivation_hook(__FILE__, array('plugin_mp_goods_best', 'uninstall'));
+RC_Plugin::register_activation_hook(__FILE__, array('plugin_mp_goods', 'install'));
+RC_Plugin::register_deactivation_hook(__FILE__, array('plugin_mp_goods', 'uninstall'));
 
 // end
