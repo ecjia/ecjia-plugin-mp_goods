@@ -51,6 +51,10 @@ return array(
     'ext_icon'      => 'images/icon_goods.png',
     
     'sub_code'      => ['best', 'hot', 'new', 'recommend', 'promotion'], //子命令
+
+    'support_platform' => 'wechat', //仅支持微信公众平台
+
+    'support_platform_type' => ['server', 'unauthorized', 'subscribe', 'test'], //仅支持微信服务号
     
     'support_type'  => Ecjia\App\Platform\Plugin\PlatformAbstract::TypeAdmin | Ecjia\App\Platform\Plugin\PlatformAbstract::TypeMerchant,
 			
