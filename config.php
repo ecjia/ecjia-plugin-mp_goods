@@ -54,7 +54,7 @@ return array(
 
     'support_platform' => 'wechat', //仅支持微信公众平台
 
-    'support_platform_type' => ['server', 'unauthorized', 'subscribe', 'test'], //仅支持微信服务号
+    'support_platform_type' => ['service', 'unauthorized', 'subscribe', 'test'], //仅支持微信服务号
     
     'support_type'  => Ecjia\App\Platform\Plugin\PlatformAbstract::TypeAdmin | Ecjia\App\Platform\Plugin\PlatformAbstract::TypeMerchant,
 			
