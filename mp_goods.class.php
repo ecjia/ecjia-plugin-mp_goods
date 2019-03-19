@@ -168,7 +168,7 @@ class mp_goods extends PlatformAbstract
     
     protected function defaultEmptyReply()
     {
-        return WechatRecord::Text_reply($this->getMessage(), '暂无商品');
+        return WechatRecord::Text_reply($this->getMessage(), __('暂无商品', 'mp_goods'));
     }
     
     protected function getCommandInstance()
