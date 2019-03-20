@@ -52,6 +52,7 @@ Author: ECJIA TEAM
 Version: 1.19.0
 Author URI: http://www.ecjia.com/
 Plugin App: platform
+Text Domain: mp_goods
 */
 defined('IN_ECJIA') or exit('No permission resources.');
 
