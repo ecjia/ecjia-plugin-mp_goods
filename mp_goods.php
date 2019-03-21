@@ -74,6 +74,7 @@ class plugin_mp_goods {
 }
 
 Ecjia_PluginManager::extend('mp_goods', function() {
+    RC_Locale::loadPluginTextdomain('mp_goods');
     require_once RC_Plugin::plugin_dir_path(__FILE__) . 'mp_goods.class.php';
     return new mp_goods();
 });
