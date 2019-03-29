@@ -54,7 +54,10 @@ defined('IN_ECJIA') or exit('No permission resources.');
 
 
 class mp_goods extends PlatformAbstract
-{   
+{
+
+    protected $news_count = 1;
+
     /**
      * 获取插件代号
      *
@@ -112,7 +115,7 @@ class mp_goods extends PlatformAbstract
             ->where('is_on_sale', 1)
             ->where('is_alone_sale', 1)
             ->where('review_status', '>', 2)
-            ->orderBy('sort_order', 'ASC')->take(5)->get();
+            ->orderBy('sort_order', 'ASC')->take($this->news_count)->get();
         }
         else if ($type == self::TypeMerchant) {
             $data = RC_DB::table('goods')
@@ -122,7 +125,7 @@ class mp_goods extends PlatformAbstract
             ->where('is_alone_sale', 1)
             ->where('review_status', '>', 2)  
             ->where('store_id', $this->getStoreId())
-            ->orderBy('sort_order', 'ASC')->take(5)->get();
+            ->orderBy('sort_order', 'ASC')->take($this->news_count)->get();
         }
         
         return $data;
